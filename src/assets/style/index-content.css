@@ -1,0 +1,66 @@
+.index-content {
+  width: 100%;
+  height: auto;
+  /*recommendList*/
+}
+.index-content a {
+  text-decoration: none;
+  color: #d21e1e;
+  font-size: 0.9rem;
+}
+.index-content .index-banner {
+  width: 100%;
+  height: 22.8rem;
+}
+.index-content .index-banner .swiper-container {
+  width: 100%;
+  height: 100%;
+}
+.index-content .index-banner .swiper-container .swiper-slide {
+  overflow: hidden;
+}
+.index-content .index-banner .swiper-container .swiper-slide img {
+  height: 100%;
+  width: auto;
+}
+.index-content .index-banner .swiper-container .swiper-button-prev,
+.index-content .index-banner .swiper-container .swiper-button-next {
+  width: 3rem;
+  height: 4rem;
+  background-color: rgba(200, 200, 200, 0.6);
+}
+.index-content .index-banner .swiper-container .swiper-button-prev:hover,
+.index-content .index-banner .swiper-container .swiper-button-next:hover {
+  cursor: pointer;
+}
+.index-content .recommend-list {
+  width: 100%;
+  height: 23rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.index-content .recommend-list .recommend-cont {
+  width: 66rem;
+  height: 100%;
+}
+.index-content .recommend-list .recommend-cont .recommend-header {
+  width: 100%;
+  height: 4rem;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.index-content .recommend-list .recommend-cont .recommend-header span {
+  font-size: 1.1rem;
+}
+.index-content .recommend-list .recommend-cont .recommend-header span:hover {
+  cursor: pointer;
+}
+.index-content .recommend-list .recommend-cont .movie-list {
+  margin-top: 5px;
+  width: 100%;
+  height: 17.625rem;
+}
