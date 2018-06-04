@@ -17,11 +17,13 @@ export default new Router({
       path: '/',
       name: 'index',
       component: index,
+      redirect: '/index/nowShowing',
       children:[
         {
           path: '/index',
           name: 'indexContent',
           component: indexContent,
+          redirect: '/index/nowShowing',
           children:[
             {
               path: '/index/nowShowing',

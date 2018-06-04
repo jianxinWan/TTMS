@@ -32,6 +32,7 @@ export default {
   },
   mounted(){
     this.getMovieInfo();
+    this.getAllMovie();
   },
   methods:{
     getMovieInfo:function(){
@@ -59,6 +60,15 @@ export default {
 //          alert("请求出错！");
 //        }
 //      })
+    },
+    getAllMovie:function(){
+      axios.get("http://119.27.174.87:8080/ttms2.0/playServlet?method=showAll")
+        .then(res=> {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     showMovieInfo:function(e){
       let movieDom = e.currentTarget.getElementsByClassName('movieInfo')[0];

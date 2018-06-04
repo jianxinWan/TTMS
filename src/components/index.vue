@@ -8,13 +8,13 @@
         <div class="navLink">
           <ul>
             <router-link to="/index" tag="a">
-              <li class="navActive">首页</li>
+              <li @click="isActive" class="navActive">首页</li>
             </router-link>
             <router-link to="/film" tag="a">
-              <li>电影</li>
+              <li @click="isActive">电影</li>
             </router-link>
             <router-link to="theater" tag="a">
-              <li>影院</li>
+              <li @click="isActive">影院</li>
             </router-link>
           </ul>
         </div>
@@ -30,20 +30,22 @@
       </div>
     </header>
     <content>
-      <router-view></router-view>
-    </content>
-    <footer>
-      <div class="footer-content">
-        <div class="footer-top-info">
-          <div class="left-logo">
-            <img src="../../static/img/logoFont.png">
-            <p>由烫烫烫提供技术支持</p>
-          </div>
-        </div>
-        <div class="footer-bottom-info">
-        </div>
+      <div class="Allcontent-area">
+        <router-view></router-view>
       </div>
-    </footer>
+    </content>
+    <!--<footer>-->
+      <!--<div class="footer-content">-->
+        <!--<div class="footer-top-info">-->
+          <!--<div class="left-logo">-->
+            <!--<img src="../../static/img/logoFont.png">-->
+            <!--<p>由烫烫烫提供技术支持</p>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="footer-bottom-info">-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</footer>-->
   </div>
 </template>
 <script>
@@ -51,8 +53,11 @@
     name: 'HelloWorld',
     data () {
       return {
+
         msg: 'Welcome to Your Vue.js App'
       }
+    },
+    computed:{
     },
     methods: {
       showAlert(e){
@@ -68,6 +73,11 @@
             this.$refs.comfirm.show();
             break;
         }
+      },
+      isActive:function (e) {
+        $(".navLink li").removeClass('navActive');
+        let target  =e.currentTarget;
+        target.classList.add('navActive');
       }
     },
     components: {
@@ -97,13 +107,15 @@
     height:100%;
   }
   header{
+    position: fixed;
     width: 100%;
     height:5rem;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    border-bottom: rgb(128,128,128);
     border-bottom: 1px solid rgb(128,128,128);
+    background-color: white;
+    z-index:99;
   }
   header .headerLeft{
     width:55rem;
@@ -132,7 +144,7 @@
   }
   header .navLink ul{
     width: 100%;
-    height:100%;
+    height:80%;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -141,13 +153,13 @@
   .navLink ul li{
     width: 5rem;
     padding:0 0.5rem;
-    line-height: 5rem;
-    height:100%;
+    line-height: 4rem;
     text-align: center;
     list-style: none;
     font-size: 1.2rem;
   }
   .navActive{
+    color: rgba(80,191,255,1);
     font-size:1.3rem;
     border-bottom:2px solid rgba(80,191,255,1);
   }
@@ -164,6 +176,11 @@
   content{
     width: 100%;
     height:auto;
+  }
+  .Allcontent-area{
+    width: 100%;
+    height:100%;
+    padding: 5rem 0;
   }
   footer{
     width: 100%;
