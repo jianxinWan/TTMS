@@ -6,7 +6,7 @@ import Register from '../components/register.vue'
 import Film from '../components/film.vue'
 import Theater from '../components/theater.vue'
 import indexContent from '../components/indexContent.vue'
-
+import filmDetail from '../components/filmDetail.vue'
 import nowShowing from '../components/nowShowing.vue';
 import afterShowing from '../components/afterShowing.vue';
 Vue.use(Router);
@@ -51,6 +51,11 @@ export default new Router({
           path: '/film',
           name: 'film',
           component:Film
+        },
+        {
+          name: 'filmInfo',
+          path: '/film/:id',
+          component: filmDetail
         },
         {
           path: '/theater',

@@ -1,55 +1,66 @@
 <template>
-  <div class="film-content">
-    <div class="top-nav-warp">
-      <ul class="top-nav-list">
-        <li>正在上映</li>
-        <li>即将上映</li>
-        <li>经典电影</li>
-      </ul>
-    </div>
-    <div class="search-warp">
-      <div class="type-select-warp search-type" >
-        <label>类型：</label>
-        <p class="options-List">
-          <span v-for="item in searchSelect.type" class="search-options">{{item.option}}</span>
-        </p>
+  <div>
+    <div class="film-content">
+      <div class="top-nav-warp">
+        <ul class="top-nav-list">
+          <li>正在上映</li>
+          <li>即将上映</li>
+          <li>经典电影</li>
+        </ul>
       </div>
-      <hr/>
-      <div class="area-select-warp search-type">
-        <label>地区：</label>
-        <p class="options-List">
-          <span v-for="item in searchSelect.area" class="search-options">{{item.option}}</span>
-        </p>
+      <div class="search-warp">
+        <div class="type-select-warp search-type" >
+          <label>类型：</label>
+          <p class="options-List">
+            <span v-for="item in searchSelect.type" class="search-options">{{item.option}}</span>
+          </p>
+        </div>
+        <hr/>
+        <div class="area-select-warp search-type">
+          <label>地区：</label>
+          <p class="options-List">
+            <span v-for="item in searchSelect.area" class="search-options">{{item.option}}</span>
+          </p>
+        </div>
+        <hr/>
+        <div class="area-select-warp search-type">
+          <label>时间：</label>
+          <p class="options-List">
+            <span v-for="item in searchSelect.time" class="search-options">{{item.option}}</span>
+          </p>
+        </div>
       </div>
-      <hr/>
-      <div class="area-select-warp search-type">
-        <label>时间：</label>
-        <p class="options-List">
-          <span v-for="item in searchSelect.time" class="search-options">{{item.option}}</span>
-        </p>
-      </div>
-    </div>
-    <div class="movie-list-warp">
-      <div class="sort-select-warp">
-        <p>
-          <a href="#">
-            <span>按时间排序</span>
-          </a>
-          <a href="#">
+      <div class="movie-list-warp">
+        <div class="sort-select-warp">
+          <p>
+            <a href="#">
+              <span>按时间排序</span>
+            </a>
+            <a href="#">
             <span>
               按评分排序
             </span>
-          </a>
-        </p>
-      </div>
-      <div class="film-show-warp">
-        <ul class="film-list">
-          <li class="filmIntro" v-for="item in allFilmInfo">
-            <img :src="item.poster" width="100%" height="100%" />
-          </li>
-        </ul>
+            </a>
+          </p>
+        </div>
+        <div class="film-show-warp">
+          <div class="loading-warp" v-if="!flag">
+            <ttms-loading></ttms-loading>
+          </div>
+          <ul class="film-list">
+            <!--<li class="filmIntro" v-for="item in allFilmInfo">-->
+            <!--<img :src="item.poster" width="100%" height="100%" />-->
+            <!--</li>-->
+            <div v-for="item in allFilmInfo" class="film-poster-warp">
+              <router-link tag="div" :to ="{name:'filmInfo',params :{id:item.pid}}">
+                <ttms-poster  :film-info="item" v-if="flag"></ttms-poster>
+              </router-link>
+            </div>
+          </ul>
+        </div>
       </div>
     </div>
+    <ttms-footer></ttms-footer>
   </div>
 </template>
 <script>
@@ -59,7 +70,7 @@
       data(){
         return {
           fileName:'film',
-          allFilmInfo:{},
+          allFilmInfo:[],
           searchSelect:{
             type:[
               {
@@ -181,18 +192,19 @@
                 option:'2013',
               },
             ]
-          }
+          },
+          flag:false
         }
       },
-      mounted:function(){
+      created:function(){
         this.getAllMovieInfo();
       },
       methods:{
-        getAllMovieInfo:function () {
+        async getAllMovieInfo() {
           axios.get("http://119.27.174.87:8080/ttms2.0/playServlet?method=showAll")
             .then(res=> {
-              console.log(res.data);
               this.allFilmInfo = res.data;
+              this.flag=true;
             })
             .catch(err => {
               console.log(err);
@@ -302,14 +314,9 @@
     align-items: center;
     flex-wrap: wrap;
   }
-  .filmIntro{
-    width: 160px;
-    height:230px;
-    border: 1px solid;
+  .film-poster-warp{
     margin-left: 3rem;
-    margin-top: 3rem;
-  }
-  .filmIntro:hover{
-    cursor: pointer;
+    margin-top: 2rem;
+    border: none;
   }
 </style>

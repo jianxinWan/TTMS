@@ -1,39 +1,43 @@
 <template>
-  <div class="index-content">
-    <div class="index-banner">
-      <div class="swiper-container">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="item in bannerInfoList">
-            <img :src="item.imgSrc">
-            <div v-show="showNextBtn">
-              <div  class="swiper-button-prev"></div>
-              <div  class="swiper-button-next"></div>
+  <div>
+    <div class="index-content">
+      <div class="index-banner">
+        <div class="swiper-container">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide" v-for="item in bannerInfoList">
+              <img :src="item.imgSrc">
+              <div v-show="showNextBtn">
+                <div  class="swiper-button-prev"></div>
+                <div  class="swiper-button-next"></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="recommend-list">
-      <div class="recommend-cont">
-        <div class="recommend-header">
-          <p>
+      <div class="recommend-list">
+        <div class="recommend-cont">
+          <div class="recommend-header">
+            <p>
             <span>
               <router-link to="/index/nowShowing" tag="span">正在热映</router-link>
             </span>
-            <span style="padding-left:20px">
+              <span style="padding-left:20px">
               <router-link to="/index/afterShowing" tag="span">即将上映</router-link>
             </span>
-          </p>
-          <span>
+            </p>
+            <span>
             <a href="#">查看全部&gt</a>
           </span>
-        </div>
-        <div class="movie-list">
-          <router-view></router-view>
+          </div>
+          <div class="movie-list">
+            <router-view></router-view>
+          </div>
         </div>
       </div>
     </div>
+    <ttms-footer></ttms-footer>
   </div>
+
 </template>
 <script>
   import Swiper from 'swiper';

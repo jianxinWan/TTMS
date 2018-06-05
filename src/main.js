@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App';
 import router from './router';
+import register from './register/'
 import WVUE from 'wvue-ui';
 import 'swiper/dist/css/swiper.min.css';
 Vue.config.productionTip = false;
@@ -12,5 +13,6 @@ new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  register
 });
