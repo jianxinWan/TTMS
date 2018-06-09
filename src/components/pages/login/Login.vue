@@ -40,5 +40,5 @@
     }
 </script>
 <style lang="less">
-  @import "../assets/style/login.less";
+  @import "../../../assets/style/login.less";
 </style>

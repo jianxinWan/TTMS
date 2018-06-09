@@ -3,7 +3,7 @@
     <header>
       <div class="headerLeft">
         <div class="leftLogo">
-          <img src="../../static/img/ttmsLogo.png" width="auto" height="200%">
+          <img src="../../../../static/img/ttmsLogo.png" width="auto" height="200%">
         </div>
         <div class="navLink">
           <ul>

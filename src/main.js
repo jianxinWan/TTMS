@@ -5,13 +5,22 @@ import App from './App';
 import router from './router';
 import register from './register/'
 import WVUE from 'wvue-ui';
+import Vuex from 'vuex';
+import store from './vuex/store'
 import 'swiper/dist/css/swiper.min.css';
 Vue.config.productionTip = false;
+
 Vue.use(WVUE);
-/* eslint-disable no-new */
+Vue.use(Vuex);
+
+
+router.afterEach((to,from,next) => {
+  window.scrollTo(0,0);
+});
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>',
   register

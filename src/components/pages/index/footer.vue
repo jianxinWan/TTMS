@@ -3,7 +3,7 @@
     <div class="footer-content">
       <div class="footer-top-info">
         <div class="left-logo">
-          <img src="../../static/img/logoFont.png">
+          <img src="../../../../static/img/logoFont.png">
           <p>由烫烫烫提供技术支持</p>
         </div>
       </div>

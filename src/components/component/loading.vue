@@ -1,6 +1,6 @@
 <template>
   <div class="loading">
-    <img src="../../static/img/loading2.gif">
+    <img src="../../../static/img/loading2.gif">
   </div>
 </template>
 <script>
@@ -13,10 +13,10 @@
       }
     }
 </script>
-<style>
+<style lang="less">
   .loading{
     width: 100%;
-    height:400px;
+    height:inherit;
     background-color: white;
   }
   .loading img{

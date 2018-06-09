@@ -34,7 +34,43 @@
       </div>
     </div>
     <div class="buyTicket-warp">
-
+      <div class="buyTicket-center-warp">
+        <div class="buy-tit">
+          <h2>选座购票</h2>
+        </div>
+        <hr/>
+        <div class="buy-cont">
+          <table cellspacing="0" cellpadding="0" border="0" class="performanceTable">
+            <thead>
+              <tr>
+                <th>放映时间</th>
+                <th>语言版本</th>
+                <th>放映厅</th>
+                <th>座位情况</th>
+                <th>现价/影院价</th>
+                <th>选座购票</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in performancePlan.scheduleList">
+                <th>
+                  <h2>{{item.startTime.hours}}:{{item.startTime.minutes}}</h2>
+                  <p>预计{{item.endTime.hours}}:{{item.endTime.minutes}}离场</p>
+                </th>
+                <th>{{item.languageType}}</th>
+                <th>{{item.studio.name}}</th>
+                <th>{{item.studio.status}}</th>
+                <th>{{item.price}}</th>
+                <th>
+                  <router-link tag="div" :to ="{name:'buyTickets',params:{pid:performancePlan.pid,sid:item.sid}}">
+                    <w-button type="info">选座购票</w-button>
+                  </router-link>
+                </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
     <ttms-footer></ttms-footer>
   </div>
@@ -51,20 +87,23 @@
           detailInfo:{},
           bgStyle:{
             backgroundImage: ""
-          }
+          },
+          performancePlan:[
+
+          ]
         }
       },
       computed:{
       },
       mounted:function(){
         this.getFilmInfoById();
+        this.getPerformancePlan();
       },
       methods:{
         getFilmInfoById:function(){
           axios.get("http://119.27.174.87:8080/ttms2.0/playServlet?method=showAll")
             .then(res=> {
               let allFilmInfo = res.data;
-              console.log(res.data);
               allFilmInfo.forEach(function(item){
                 if(item.pid == this.filmId){
                   this.detailInfo = item;
@@ -72,6 +111,16 @@
                   Vue.set(this.bgStyle,'backgroundImage',"url("+item.poster+")");
                 }
               }.bind(this));
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        },
+        getPerformancePlan:function(){
+          let vm = this;
+          axios.get("http://119.27.174.87:8080/ttms2.0/playServlet?method=selectOne&id=227592")
+            .then(res=> {
+              vm.performancePlan = res.data;
             })
             .catch(err => {
               console.log(err);
@@ -85,7 +134,6 @@
   .detail-warp{
     width:100%;
     height:400px;
-    border: 1px solid;
     margin: 0 auto;
     display: flex;
     flex-direction: row;
@@ -153,9 +201,50 @@
     text-align: start;
     line-height: 1.5rem;
   }
-
   .buyTicket-warp{
     width: 100%;
-    height:400px;
+    height:auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .buyTicket-center-warp{
+    width:1100px;
+    height:auto;
+    padding: 10px 0;
+  }
+  .buy-tit{
+    width: 100%;
+    height:2.5rem;
+    display: flex;
+    color:rgba(80,80,80,1);
+    flex-direction: row;
+    letter-spacing: 4px;
+    justify-content: flex-start;
+  }
+  .buy-cont{
+    width: 100%;
+    height: auto;
+    margin: 15px 0;
+  }
+  .performanceTable{
+    width: 100%;
+    height: auto;
+    color: #797979;
+  }
+  .performanceTable thead tr{
+    width: 100%;
+    height:2.5rem;
+    background-color:#F6F6F6;
+    font-size: 1.05rem;
+    letter-spacing: 1px;
+  }
+  .performanceTable tbody tr{
+    width: 100%;
+    height:3.75rem;
+  }
+  .performanceTable tbody tr:nth-child(even){
+    background-color: #F6F6F6;
   }
 </style>
