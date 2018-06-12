@@ -20,13 +20,27 @@
         </div>
       </div>
       <div class="logOrReg">
-        <router-link to="/login" tag="a">
-          登录
-        </router-link>
-        <span>/</span>
-        <router-link to="/register" tag="a">
-          注册
-        </router-link>
+        <div class="myDoc">
+          <div class="userInfoLink">
+            <div class="userImg">
+              <i class="w-icon-user"></i>
+            </div>
+            <p v-if="!this.$store.state.user.name">
+              <router-link to="/login" tag="a">
+                登录
+              </router-link>
+              <span>/</span>
+              <router-link to="/register" tag="a">
+                注册
+              </router-link>
+            </p>
+            <p v-else>
+              <router-link to="/mydoc" tag="a">
+                个人中心
+              </router-link>
+            </p>
+          </div>
+        </div>
       </div>
     </header>
     <content>
@@ -37,34 +51,33 @@
   </div>
 </template>
 <script>
+
   export default {
-    name: 'HelloWorld',
     data () {
       return {
-        msg: 'Welcome to Your Vue.js App'
+        msg: '',
+        logined:false
       }
     },
     computed:{
+
+    },
+    mounted:function(){
+      this.getLocalStorage();
     },
     methods: {
-      showAlert(e){
-        let alertType = e.currentTarget.getAttribute("alert");
-        switch(alertType){
-          case 'info':
-            this.$refs.info.show();
-            break;
-          case 'warning':
-            this.$refs.warning.show();
-            break;
-          case 'comfirm':
-            this.$refs.comfirm.show();
-            break;
-        }
-      },
       isActive:function (e) {
         $(".navLink li").removeClass('navActive');
         let target  =e.currentTarget;
         target.classList.add('navActive');
+      },
+      getLocalStorage:function(){
+        let userStr = localStorage.login;
+        if(userStr){
+          let userInfo  = JSON.parse(userStr);
+          this.$store.commit('setUserStatus',userInfo.status);
+          this.$store.commit('setUserName',userInfo.name);
+        }
       }
     },
     components: {
@@ -114,6 +127,7 @@
   header .leftLogo{
     width: 15rem;
     height:100%;
+    overflow: hidden;
   }
   header .leftLogo img{
     width: 20rem;
@@ -156,9 +170,41 @@
     cursor: pointer;
   }
   header .logOrReg{
-    width: 10rem;
+    width: 13rem;
     height:100%;
     line-height: 5rem;
+  }
+  .myDoc{
+    width: 200px;
+    height:5rem;
+  }
+  .userInfoLink{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .userInfoLink p{
+    margin-left: 0.6rem;
+    letter-spacing: 2px;
+  }
+  .userImg{
+    width: 2.5rem;
+    height:2.5rem;
+    border: 1px solid;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .userImg:hover{
+    color:rgba(80,191,255,1);
+    cursor: pointer;
+  }
+  .userImg i{
+    font-size: 2.5rem;
+    line-height: 2.5rem;
   }
   content{
     width: 100%;

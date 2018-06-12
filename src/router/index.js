@@ -8,9 +8,12 @@ import Theater from '../components/pages/theater/theater.vue'
 import indexContent from '../components/pages/index/indexContent.vue'
 import filmDetail from '../components/pages/film/filmDetail.vue'
 import BuyTicket from '../components/pages/buy/buyTickets.vue'
-
+import Mydoc from '../components/pages/mydoc/mydoc.vue'
+import Indent from '../components/pages/mydoc/indent.vue'
 Vue.use(Router);
 export default new Router({
+  hashbang: true,
+  history: true,
   routes: [
     {
       path: '/',
@@ -37,6 +40,18 @@ export default new Router({
           path: '/film',
           name: 'film',
           component:Film
+        },
+        {
+          path: '/mydoc',
+          name: 'mydoc',
+          component:Mydoc,
+          children:[
+            {
+              name: 'indent',
+              path: '/mydoc/indent',
+              component: Indent
+            },
+          ]
         },
         {
           name: 'filmInfo',

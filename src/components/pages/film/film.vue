@@ -3,29 +3,30 @@
     <div class="film-content">
       <div class="top-nav-warp">
         <ul class="top-nav-list">
-          <li>正在上映</li>
-          <li>即将上映</li>
-          <li>经典电影</li>
+
+          <li @click="statusSelect('1',$event)" class="activeNav">正在上映</li>
+          <li @click="statusSelect('0',$event)">即将上映</li>
+          <li @click="statusSelect('10',$event)" >查看全部</li>
         </ul>
       </div>
       <div class="search-warp">
         <div class="type-select-warp search-type" >
           <label>类型：</label>
-          <p class="options-List">
-            <span v-for="item in searchSelect.type" class="search-options">{{item.option}}</span>
+          <p class="options-List" id="typeSelect">
+            <span v-for="item in searchSelect.type" class="search-options" @click="typeSelect(item.option,$event)">{{item.option}}</span>
           </p>
         </div>
         <hr/>
         <div class="area-select-warp search-type">
           <label>地区：</label>
-          <p class="options-List">
-            <span v-for="item in searchSelect.area" class="search-options">{{item.option}}</span>
+          <p class="options-List" id="areaSelect">
+            <span v-for="item in searchSelect.area" class="search-options" @click="countrySelect(item.option,$event)">{{item.option}}</span>
           </p>
         </div>
         <hr/>
         <div class="area-select-warp search-type">
           <label>时间：</label>
-          <p class="options-List">
+          <p class="options-List" id="timeSelect">
             <span v-for="item in searchSelect.time" class="search-options">{{item.option}}</span>
           </p>
         </div>
@@ -48,10 +49,7 @@
             <ttms-loading></ttms-loading>
           </div>
           <ul class="film-list">
-            <!--<li class="filmIntro" v-for="item in allFilmInfo">-->
-            <!--<img :src="item.poster" width="100%" height="100%" />-->
-            <!--</li>-->
-            <div v-for="item in allFilmInfo" class="film-poster-warp">
+            <div v-for="item in showList" class="film-poster-warp">
               <router-link tag="div" :to ="{name:'filmInfo',params :{id:item.pid}}">
                 <ttms-poster  :film-info="item" v-if="flag"></ttms-poster>
               </router-link>
@@ -71,6 +69,7 @@
         return {
           fileName:'film',
           allFilmInfo:[],
+          showList:[],
           searchSelect:{
             type:[
               {
@@ -139,7 +138,7 @@
                 option:'全部'
               },
               {
-                option:'大陆',
+                option:'中国大陆',
               },
               {
                 option:'美国',
@@ -199,16 +198,107 @@
       created:function(){
         this.getAllMovieInfo();
       },
+      mounted:function(){
+        this.initSpan();
+      },
       methods:{
         async getAllMovieInfo() {
           axios.get("http://119.27.174.87:8080/ttms2.0/playServlet?method=showAll")
             .then(res=> {
+              console.log(res.data);
               this.allFilmInfo = res.data;
+              this.showList = this.allFilmInfo;
               this.flag=true;
+              this.statusSelect(1,this,true);
             })
             .catch(err => {
               console.log(err);
             });
+        },
+        hasClass:function(element, cls) {
+          return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
+        },
+        initSpan:function(){
+          document.getElementById("typeSelect").firstChild.classList.add("activeLi");
+          document.getElementById("areaSelect").firstChild.classList.add("activeLi");
+          document.getElementById("timeSelect").firstChild.classList.add("activeLi");
+          document.getElementsByClassName("top-nav-list")[0].firstChild.classList.add("activeNav");
+        },
+        statusSelect:function(status,e,first){
+          if(status==10){
+            this.showList = this.allFilmInfo;
+          }else{
+            this.showList=[];
+            for(let item in this.allFilmInfo){
+              if(this.allFilmInfo[item].status==status){
+                this.showList.push(this.allFilmInfo[item]);
+              }
+            }
+            this.showList = this.showList.slice(0);
+          }
+          if(!first){
+            let liChildren = document.getElementsByClassName("top-nav-list")[0].children;
+            for(let i=0;i<liChildren.length;i++){
+              if(this.hasClass(liChildren[i],"activeNav")){
+                liChildren[i].className = "";
+              }
+            }
+            e.currentTarget.classList.add("activeNav");
+          }
+        },
+        countrySelect:function(country,e){
+          if(country == "全部"){
+            this.showList = this.allFilmInfo;
+            let liChildren = document.getElementById("areaSelect").children;
+            for(let i=0;i<liChildren.length;i++){
+              if(this.hasClass(liChildren[i],"activeLi")){
+                liChildren[i].classList.remove("activeLi");
+              }
+            }
+            e.currentTarget.classList.add("activeLi");
+          }else{
+            this.showList=[];
+            for(let item in this.allFilmInfo){
+              if(this.allFilmInfo[item].country == country){
+                this.showList.push(this.allFilmInfo[item]);
+              }
+            }
+            this.showList = this.showList.slice(0);
+            let liChildren = document.getElementById("areaSelect").children;
+            for(let i=0;i<liChildren.length;i++){
+              if(this.hasClass(liChildren[i],"activeLi")){
+                liChildren[i].classList.remove("activeLi");
+              }
+            }
+            e.currentTarget.classList.add("activeLi");
+          }
+        },
+        typeSelect:function(type,e){
+          if(type == "全部"){
+            this.showList = this.allFilmInfo;
+            let liChildren = document.getElementById("typeSelect").children;
+            for(let i=0;i<liChildren.length;i++){
+              if(this.hasClass(liChildren[i],"activeLi")){
+                liChildren[i].classList.remove("activeLi");
+              }
+            }
+            e.currentTarget.classList.add("activeLi");
+          }else{
+            this.showList=[];
+            for(let item in this.allFilmInfo){
+              if(this.allFilmInfo[item].plot.indexOf(type)>-1){
+                this.showList.push(this.allFilmInfo[item]);
+              }
+            }
+            this.showList = this.showList.slice(0);
+            let liChildren = document.getElementById("typeSelect").children;
+            for(let i=0;i<liChildren.length;i++){
+              if(this.hasClass(liChildren[i],"activeLi")){
+                liChildren[i].classList.remove("activeLi");
+              }
+            }
+            e.currentTarget.classList.add("activeLi");
+          }
         }
       }
     }
@@ -240,6 +330,21 @@
   .top-nav-list li{
     padding: 0.2rem 2rem;
     font-size: 1.1rem;
+  }
+  .top-nav-list li:hover{
+    cursor: pointer;
+    color: rgba(80,191,255,1);
+  }
+  .activeNav{
+    color:rgba(80,191,255,1);
+  }
+  .activeLi{
+    background-color: rgba(80,191,255,1);
+    color: white;
+    border-radius: 0.6rem;
+    font-size: 1rem;
+    display: inline-block;
+    padding:0.2rem 0.8rem;
   }
   .search-warp{
     width: 1078px;
@@ -282,11 +387,11 @@
     font-size: 1rem;
     padding:0.2rem 0.8rem;
   }
-  .search-options:first-child{
-    background-color: rgba(80,191,255,1);
-    color: white;
-    border-radius: 0.6rem;
-  }
+  /*.search-options:first-child{*/
+    /*background-color: rgba(80,191,255,1);*/
+    /*color: white;*/
+    /*border-radius: 0.6rem;*/
+  /*}*/
   .movie-list-warp{
     margin-top: 40px;
     width:1120px;

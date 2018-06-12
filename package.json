@@ -16,7 +16,8 @@
     "swiper": "^4.2.6",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "wvue-ui": "^1.0.6"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

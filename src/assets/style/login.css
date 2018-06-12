@@ -40,6 +40,9 @@
   justify-content: space-between;
   align-items: center;
 }
+.loginAll .login-right .login-form .login-form-warp {
+  margin-top: 30px;
+}
 .loginAll .login-right .login-form .loginBtn {
   width: 20rem;
   margin: 0 auto;
