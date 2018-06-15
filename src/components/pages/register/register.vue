@@ -66,10 +66,10 @@
           }
         ],
         registInfo:{
-          name:"origin",
-          phone:"18740371680",
-          address:"西安",
-          email:"1158810459@qq.com",
+          name:"",
+          phone:"",
+          address:"",
+          email:"",
           password1:"",
           password2:""
         }

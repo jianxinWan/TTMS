@@ -33,7 +33,7 @@
             <div class="loading-area" v-if="!(nowShowFlag||afterShowFlag)" >
               <ttms-loading></ttms-loading>
             </div>
-            <div v-for="item in showFilmList" v-if="nowShowFlag||afterShowFlag" class="animated fadeIn">
+            <div v-for="item in showFilmList" v-if="(nowShowFlag||afterShowFlag)&&item.status!=2" class="animated fadeIn">
               <router-link tag="div" :to ="{name:'filmInfo',params :{id:item.pid}}">
                 <ttms-poster :film-info="item"></ttms-poster>
               </router-link>

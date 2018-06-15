@@ -57,7 +57,7 @@
                   <h2>{{item.startTime.hours}}:{{item.startTime.minutes}}</h2>
                   <p>预计{{item.endTime.hours}}:{{item.endTime.minutes}}离场</p>
                 </th>
-                <th>{{item.languageType}}</th>
+                <th>{{performancePlan.language}}</th>
                 <th>{{item.studio.name}}</th>
                 <th>{{item.studio.status}}</th>
                 <th>{{item.price}}</th>
@@ -88,9 +88,7 @@
           bgStyle:{
             backgroundImage: ""
           },
-          performancePlan:[
-
-          ]
+          performancePlan:{}
         }
       },
       computed:{
@@ -117,14 +115,25 @@
             });
         },
         getPerformancePlan:function(){
-          let vm = this;
-          axios.get("http://119.27.174.87:8080/ttms2.0/playServlet?method=selectOne&id=227592")
-            .then(res=> {
-              vm.performancePlan = res.data;
-            })
-            .catch(err => {
-              console.log(err);
-            });
+          $.ajax({
+            type: "GET",
+            dataType:"json",
+            url: "http://119.27.174.87:8080/ttms2.0/playServlet",
+            data: {
+              "method": "selectOne",
+              "id":this.$route.params.id
+            },
+            xhrFields: {
+              withCredentials: true
+            },
+            crossDomain: true,
+            success: function (res) {
+              this.performancePlan = res;
+            }.bind(this),
+            error: function (err) {
+              alert("通信错误");
+            }
+          });
         }
       }
     }

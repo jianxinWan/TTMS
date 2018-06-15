@@ -50,6 +50,7 @@
           data: {
             "name":this.loginInfo.name,
             "password":this.loginInfo.password,
+            "isAdmin":"isAdmin",
             "method":"login"
           },
           xhrFields: {
@@ -67,7 +68,7 @@
               alert("登录成功！");
               this.$store.commit('setUserStatus',true);
               this.$store.commit('setUserName',this.loginInfo.name);
-              this.$router.push({path:'/film'});
+              this.$router.push({path:'/ttms/TTT/admin'});
             }else{
               alert(json.fail);
             }

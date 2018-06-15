@@ -205,7 +205,6 @@
         async getAllMovieInfo() {
           axios.get("http://119.27.174.87:8080/ttms2.0/playServlet?method=showAll")
             .then(res=> {
-              console.log(res.data);
               this.allFilmInfo = res.data;
               this.showList = this.allFilmInfo;
               this.flag=true;

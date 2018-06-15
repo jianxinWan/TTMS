@@ -2,20 +2,14 @@
   <div>
     <div class="buy-cont-warp">
       <div class="buy-center-warp">
-        <div class="buy-bar-warp">
-          <ul class="buy-bar-list">
-            <li class="finish-status"><i class="w-icon-favfill"></i>1.选择影片，场次</li>
-            <li class="now-status">2.选座，填手机号</li>
-            <li class="after-finish-status">3.确认订单，支付</li>
-            <li class="after-finish-status">4.支付成功，影院取票观影</li>
-          </ul>
-        </div>
+        <ttms-buybar></ttms-buybar>
         <div class="buy-ticket-warp">
           <div v-if="(!filmInfoFlag)&&(!seatFlag)">
             <ttms-loading></ttms-loading>
           </div>
           <div v-else class="buy-center">
             <div class="left-Seat-show">
+              <!--:seatArray="seatArray"-->
               <ttms-seat v-if="this.seatFlag" @selectedTicket="selectTicketCallback" :seatArray="seatArray" ></ttms-seat>
             </div>
             <div class="right-info-buy" v-if="seatFlag&&filmInfoFlag">
@@ -53,8 +47,8 @@
                 <p>收到电子码的手机号</p>
                 <w-input width="15rem" label="Phone" check="phone" v-model="phone"></w-input>
               </div>
-              <div class="submitBtn">
-                <w-button type="info">确认信息，下单</w-button>
+              <div class="submitBtn" @click="lockSeatAjax">
+                  <w-button type="info" >确认信息，下单</w-button>
               </div>
             </div>
           </div>
@@ -72,6 +66,7 @@
       return{
         seatArray:[],
         selectedTicketList:[],
+        rowAndCol:[],
         seatFlag:false,
         filmInfoFlag:false,
         filmInfo:{},
@@ -84,18 +79,25 @@
       this.getFilmInfo();
       console.log(this.$route.params.sid,this.$route.params.pid);
     },
-    methods:{
-      selectTicketCallback(ticketsList){
+    methods: {
+      selectTicketCallback(ticketsList) {
         this.selectedTicketList = ticketsList;
       },
-      getFilmInfo:function(){
+      getColAndRow:function(){
+        for(let i=0;i<this.selectedTicketList.length;i++){
+          let item = [];
+          item[0] = this.selectedTicketList[i].row;
+          item[1] = this.selectedTicketList[i].col;
+          this.rowAndCol.push(item);
+        }
+      },
+      getFilmInfo: function () {
         axios.get("http://119.27.174.87:8080/ttms2.0/playServlet?method=showAll")
-          .then(res=> {
+          .then(res => {
             let allFilmInfo = res.data;
-            allFilmInfo.forEach(function(item){
-              if(item.pid == this.$route.params.pid){
+            allFilmInfo.forEach(function (item) {
+              if (item.pid == this.$route.params.pid) {
                 this.filmInfoFlag = true;
-                console.log(item);
                 this.filmInfo = item;
               }
             }.bind(this));
@@ -104,30 +106,66 @@
             console.log(err);
           });
       },
-      getScheduleInfo:function(){
+      getScheduleInfo: function () {
         let vm = this;
         $.ajax({
           type: "GET",
-          url:"http://119.27.174.87:8080/ttms2.0/scheduleServlet?method=selectScheduleById&sid=3B6E8E7ADDC3475CAE16074C34EE0F63",
+          url: "http://119.27.174.87:8080/ttms2.0/scheduleServlet",
+          data:{
+            "method":"selectScheduleById",
+            "sid":this.$route.params.sid
+          },
           xhrFields: {
             withCredentials: true
           },
           crossDomain: true,
-          success:function (res) {
+          success: function (res) {
             let json = JSON.parse(res);
-            if(json.error){
-              window.location.href="http://localhost:8080/#/login";
-            }else{
+            if (json.error) {
+              this.$router.push({path:'/login'});
+            } else {
               vm.seatArray = json.seatArray;
               vm.seatFlag = true;
               vm.otherInfo = json;
               vm.phone = json.phoneNumber;
             }
-          },
-          error:function(){
+          }.bind(this),
+          error: function () {
             alert("通信错误！");
           }
         })
+      },
+      lockSeatAjax: function () {
+        this.getColAndRow();
+        if(this.rowAndCol.length==0){
+          alert("座位不能为空！");
+        }else{
+          $.ajax({
+            type: "GET",
+            dataType:"json",
+            url: "http://119.27.174.87:8080/ttms2.0/saleServlet",
+            data: {
+              "method": "addSaleItem",
+              "seatList":this.rowAndCol,
+              "scheduleid":this.$route.params.sid
+            },
+            xhrFields: {
+              withCredentials: true
+            },
+            crossDomain: true,
+            success: function (res) {
+              let indentInfo = JSON.stringify(res);
+              localStorage.setItem("indent",indentInfo);
+              alert("正在锁座，你将有十分钟的支付时间");
+              this.$router.push({path:'/pay'});
+            }.bind(this),
+            error: function (err) {
+              alert("错误！");
+            },
+            traditional:true
+          })
+        }
+
       }
     }
   }
@@ -144,24 +182,6 @@
     width: 990px;
     margin: 10px 0;
     height:670px;
-  }
-  .buy-bar-warp{
-    width: 100%;
-    padding: 0 5px;
-    height:3rem;
-  }
-  .buy-bar-list{
-    width: 100%;
-    height:100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-  }
-  .buy-bar-list li{
-    width: 24.8%;
-    height:100%;
-    text-align: center;
-    line-height: 3rem;
   }
   .buy-center{
     display: flex;
@@ -256,19 +276,6 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: ;
-  }
-
-  .finish-status {
-    color: rgba(80, 191, 255, 1);
-    border-bottom: 2px solid rgba(80, 191, 255, 1);
-  }
-  .now-status{
-    color: red;
-    border-bottom: 2px solid red;
-  }
-  .after-finish-status{
-    color:#ccc;
-    border-bottom: 2px solid #ccc;
+    align-items:center ;
   }
 </style>

@@ -8,7 +8,11 @@
               查看订单
             </router-link>
           </li>
-          <li>修改个人信息</li>
+          <li>
+            <router-link to="/mydoc/userInfo" tag="a">
+              修改个人信息
+            </router-link>
+          </li>
           <li>关于我们团队</li>
           <li>格瓦拉影院</li>
         </ul>
@@ -48,10 +52,11 @@
   .user-menu-list li{
     width: 100%;
     height:2.5rem;
+    font-size: 1.05rem;
     line-height: 2.5rem;
     text-align: left;
   }
-  .user-menu-list li:hover{
+  .user-menu-list a:hover{
     color:rgba(80,191,255,1);
     cursor: pointer;
   }
@@ -60,5 +65,6 @@
     border-left: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     margin-left:50px;
+    box-shadow:0 3px 2px  #ccc ;
   }
 </style>

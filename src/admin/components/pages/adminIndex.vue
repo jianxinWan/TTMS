@@ -6,17 +6,6 @@
           <img src="../../../../static/img/ttmsLogo.png" width="auto" height="200%">
         </div>
         <div class="navLink">
-          <ul>
-            <router-link to="/index" tag="a">
-              <li @click="isActive" class="navActive">首页</li>
-            </router-link>
-            <router-link to="/film" tag="a">
-              <li @click="isActive">电影</li>
-            </router-link>
-            <router-link to="theater" tag="a">
-              <li @click="isActive">影院</li>
-            </router-link>
-          </ul>
         </div>
       </div>
       <div class="logOrReg">
@@ -46,7 +35,38 @@
     </header>
     <content>
       <div class="Allcontent-area">
-        <router-view></router-view>
+        <div class="leftMenu">
+          <ul class="funMenu">
+            <li class="play">
+              <router-link to="/ttms/TTT/admin/plays" tag="div">
+                管理剧目
+              </router-link>
+            </li>
+            <li class="hall">
+              <router-link to="/ttms/TTT/admin/halls" tag="div">
+                管理演出厅
+              </router-link>
+            </li>
+            <li class="plan">
+              <router-link to="/ttms/TTT/admin/plans" tag="div">
+                管理演出计划
+              </router-link>
+            </li>
+            <li class="order">
+              <router-link to="/ttms/TTT/admin/orders" tag="div">
+                处理订单
+              </router-link>
+            </li>
+            <li class="collect">
+              <router-link to="/ttms/TTT/admin/collect" tag="div">
+                剧目汇总
+              </router-link>
+            </li>
+          </ul>
+        </div>
+        <div class="rightCont">
+          <router-view></router-view>
+        </div>
       </div>
     </content>
   </div>
@@ -68,7 +88,7 @@
     },
     methods: {
       isActive:function (e) {
-        $(".navLink li").removeClass('navActive');
+        $(".funMenu li").removeClass('navActive');
         let target  =e.currentTarget;
         target.classList.add('navActive');
       },
@@ -165,8 +185,8 @@
     align-items: flex-end;
   }
   .navLink ul li{
-    width: 5rem;
-    padding:0 0.5rem;
+    width: auto;
+    padding:0 1rem;
     line-height: 4rem;
     text-align: center;
     list-style: none;
@@ -233,6 +253,37 @@
   .Allcontent-area{
     width: 100%;
     height:100%;
-    padding: 5rem 0;
+    padding-top: 5rem;
+    display: flex;
+    flex-direction:row;
+    justify-content: flex-start;
+  }
+  .leftMenu{
+    position: fixed;
+    width: 300px;
+    height:100%;
+    border: 1px solid #ccc;
+  }
+  .funMenu{
+    width: 100%;
+    height:100%;
+  }
+  .funMenu li{
+    width: 100%;
+    height:3rem;
+    line-height: 3rem;
+    border-bottom: 1px solid #ccc;
+  }
+  .funMenu li:hover{
+    background-color:rgba(80,191,255,1);
+    color: white;
+    cursor: pointer;
+  }
+  .rightCont{
+    padding: 2rem 2rem;
+    text-align: left;
+    width: 100%;
+    height: 700px;
+    margin-left: 300px;
   }
 </style>

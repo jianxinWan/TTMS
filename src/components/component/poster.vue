@@ -17,11 +17,15 @@
         <div class="film-name-warp">{{filmInfo.showName}}</div>
       </div>
       <div class="openTime">
-        <span class="nowShow-warp" v-if="filmInfo.status==1">
-          购票
+        <span class="nowShow-warp" v-if="filmInfo.status==1||filmInfo.status==3">
+          <p v-if="option=='0'" style="text-align: center" @click="offLineClick">下线</p>
+          <p v-if="option=='1'" style="text-align: center">购票</p>
+          <p v-if="option=='4'" style="text-align: center" @click="addPlanClick">添加演出</p>
         </span>
         <div class="afterShow-warp" v-if="filmInfo.status==0">
-          <p>上映时间:</p>
+          <p v-if="option=='0'" style="text-align: center" class="off-line" @click="offLineClick">下线</p>
+          <p v-if="option=='4'" style="text-align: center;font-size: 18px;color:black;" @click="addPlanClick">添加演出</p>
+          <p v-else>上映时间:</p>
         </div>
       </div>
     </li>
@@ -31,7 +35,11 @@
   export default {
     name:'ttms-poster',
     props: {
-      filmInfo:{}
+      filmInfo:{},
+      option:{
+        type:String,
+        default:"1"
+      }
     },
     data(){
       return {
@@ -51,6 +59,12 @@
         movieDom.classList.remove("fadeIn");
         movieDom.style.visibility="hidden";
         movieDom.classList.add("fadeOut");
+      },
+      offLineClick:function(){
+        this.$emit('offline',this.filmInfo);
+      },
+      addPlanClick:function(){
+        this.$emit('addPlan',this.filmInfo);
       }
     }
   }
@@ -68,13 +82,13 @@
   .poster-warp:hover{
     cursor: pointer;
   }
-  .movieImg{
+  .poster-warp .movieImg{
     position: absolute;
     z-index: 1;
     width:161px;
     height:224px;
   }
-  .movieInfo {
+  .poster-warp .movieInfo {
     position: absolute;
     visibility: hidden;
     width: 141px;
@@ -87,7 +101,7 @@
     text-align: start;
     background-color: rgba(0,0,0,0.57);
   }
-  .movieInfo p{
+  .poster-warp .movieInfo p{
     width:130px;
     height:1.5rem;
     overflow: hidden;
@@ -95,11 +109,11 @@
     margin-top: 0.25rem;
     letter-spacing: 2px;
   }
-  .movieImg img{
+  .poster-warp .movieImg img{
     width: 100%;
     height:100%;
   }
-  .movie-name{
+  .poster-warp .movie-name{
     position: relative;
     width:161px;
     height:3rem;
@@ -111,14 +125,14 @@
     border: none;
     border-bottom: 1px solid #ccc;
   }
-  .blurArea{
+  .poster-warp .blurArea{
     position: relative;
     filter: blur(17px);
     width: 100%;
     height:100%;
     background: linear-gradient(rgba(255,255,255,0.8),rgba(0,0,0,0.8));
   }
-  .film-name-warp{
+  .poster-warp .film-name-warp{
     position: absolute;
     display: inline-block;
     /*padding: 0.1rem 0.5rem;*/
@@ -131,22 +145,26 @@
     width:130px;
     padding:0 15px;
   }
-  .nowShow-warp{
+  .poster-warp .nowShow-warp{
     width: 100%;
     display: inline-block;
     line-height:50px;
     letter-spacing: 3px;
     font-size: 1.1rem;
   }
-  .nowShow-warp:hover{
+  .poster-warp .nowShow-warp:hover{
     background-color:rgba(80,191,255,1);
     color: white;
   }
-  .afterShow-warp{
+  .poster-warp .afterShow-warp{
     display: inline-block;
     width: 100%;
     line-height:50px;
     font-size: 0.8rem;
     color: #ccc;
+  }
+  .poster-warp  .off-line{
+    font-size: 1rem;
+    color: #2b2b2b;
   }
 </style>
