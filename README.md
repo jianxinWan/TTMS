@@ -9,5 +9,5 @@
 ## 项目中测试自己的wvue组件库
 [wvue组件库](http://139.199.104.60/wvue/index.html#/)
 ![TTMS](http://139.199.104.60/image/WVUE1.png)
-![TTMS](http://139.199.104.60/image/WVUE1.png)
+![TTMS](http://139.199.104.60/image/WVUE2.png)
 **如果你感觉这个项目不错，请留下你的小星星**
